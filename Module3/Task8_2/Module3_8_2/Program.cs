@@ -20,20 +20,29 @@ namespace Module3_8_2
             int column = 0;
             int dx = 1;
             int dy = 0;
-            int turn = 0;
+            int turns = (arraySize - 1) * 2;
             int calls = arraySize;
+            int tempCalls = arraySize;
             int temp = 0;
 
             for (int counter = 0; counter < array.Length; counter++)
             {
                 array[row, column] = counter + 1;
-                if ( --calls == 0 )
+
+                if (--calls == 0)
                 {
-                    calls = ((turn % 2) + (turn + 1) % 2) - (turn / 2 - 1) * arraySize - 2;
+                    turns--;
+                    if (turns % 2 == 1)
+                    {
+                        tempCalls -= 1;
+                        calls = tempCalls;
+                    }
+
+                    calls = tempCalls;
+
                     temp = dx;
                     dx = -dy;
                     dy = temp;
-                    turn++;
                 }
                 row += dy;
                 column += dx;
@@ -50,20 +59,15 @@ namespace Module3_8_2
             }
         }
 
-        //validation of the entered integer
         static int CheckInput(string inp)
         {
-            if (int.TryParse(inp, out int parsedInp) && (parsedInp > 0))
-            {
+            if (int.TryParse(inp, out int parsedInp) && parsedInp > 0)
                 return parsedInp;
-            }
 
-            else
-            {
-                Console.Write("Enter the correct size: ");
-                string correctInp = Console.ReadLine();
-                return CheckInput(correctInp);
-            }
+            Console.Write("Enter the correct size: ");
+            string correctInp = Console.ReadLine();
+            return CheckInput(correctInp);
+
         }
     }
 }
